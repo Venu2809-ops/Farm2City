@@ -8,76 +8,69 @@ import { useNavigate } from "react-router-dom";
 import { products } from "../../data/products";
 
 const Hero = () => {
-      const [search,setSearch]=useState("");
-      const [notFound,setNotFound]=useState(false);
+  const [search, setSearch] = useState("");
+  const [notFound, setNotFound] = useState(false);
 
-      const navigate=useNavigate();
+  const navigate = useNavigate();
 
-      const filteredProducts =
-        search.length > 0
-      ? products.filter((item)=>
-        item.name.toLowerCase()
-        .includes(search.toLowerCase()))
+  const filteredProducts =
+    search.length > 0
+      ? products.filter((item) =>
+          item.name.toLowerCase().includes(search.toLowerCase())
+        )
       : [];
 
+  const handleSearch = () => {
+    const found = products.find((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
 
-      const handleSearch=()=>{
-
-      const found=products.find((item)=>
-      item.name.toLowerCase()
-      .includes(search.toLowerCase())
-      );
-
-      if(found){
-
+    if (found) {
       navigate(`/product/${found.id}`);
-        setNotFound(false);
-
+      setNotFound(false);
+    } else {
+      setNotFound(true);
     }
-
-    else{
-
-    setNotFound(true);
-
-    }
-
-    };  
-
-
+  };
 
   return (
-    <section className="pt-28 pb-14">
+    <section className="pt-20 sm:pt-24 lg:pt-28 pb-12 sm:pb-16">
 
       <Container>
 
-        {/* HERO CARD */}
-        <div className="relative overflow-hidden rounded-[28px] min-h-180 ">
+        <div className="relative overflow-hidden rounded-[24px] sm:rounded-[28px] min-h-[850px] md:min-h-[760px] lg:min-h-[720px]">
 
-          {/* BACKGROUND IMAGE */}
+          {/* Background */}
           <img
             src={heroFarmer}
             alt="Farmer"
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          {/* DARK OVERLAY */}
-          <div className="absolute inset-0 bg-black/35"></div>
+          <div className="absolute inset-0 bg-black/40"></div>
 
-          {/* CONTENT */}
+          {/* Content */}
           <motion.div
             initial={{ opacity: 0, y: 35 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="relative z-10 px-6 lg:px-14 pt-14"
+            className="relative z-10 px-5 sm:px-8 lg:px-14 pt-10 sm:pt-14"
           >
 
-            {/* TOP TEXT */}
-            <p className="text-white/90 text-sm font-medium mb-5">
+            <p className="text-white/90 text-xs sm:text-sm font-medium mb-4">
               🌿 Trusted by 1200+ Farmers
             </p>
 
-            {/* HEADING */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl leading-tight font-bold text-white max-w-3xl">
+            {/* Heading */}
+            <h1 className="
+            text-3xl
+            sm:text-5xl
+            md:text-6xl
+            lg:text-7xl
+            leading-tight
+            font-bold
+            text-white
+            max-w-4xl">
 
               From Our Farms
 
@@ -89,162 +82,169 @@ const Hero = () => {
 
             </h1>
 
-            {/* SUBTITLE */}
-            <p className="mt-5 text-base lg:text-lg text-white/85 max-w-xl leading-relaxed">
+            {/* Subtitle */}
+            <p className="
+            mt-5
+            text-sm
+            sm:text-base
+            lg:text-lg
+            text-white/85
+            max-w-2xl
+            leading-relaxed">
 
               Bringing you the freshest, safest and most nutritious
               food directly from local farms.
 
             </p>
 
-                {/* SEARCH */}
+            {/* Search */}
+            <div className="relative mt-8 max-w-2xl">
 
-             <div className="relative mt-8 max-w-lg">
+              <div className="
+              bg-white
+              rounded-3xl
+              p-2
+              flex
+              flex-col
+              sm:flex-row
+              gap-2
+              items-stretch
+              sm:items-center
+              shadow-xl">
 
-<div className="
-bg-white
-rounded-full
-p-2
-flex
-items-center
-shadow-xl">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setNotFound(false);
+                  }}
+                  placeholder="Search vegetables, fruits, grains..."
+                  className="
+                  flex-1
+                  px-5
+                  py-3
+                  outline-none
+                  text-gray-700
+                  text-sm
+                  rounded-xl"
+                />
 
-<input
-type="text"
-value={search}
+                <Button
+                  onClick={handleSearch}
+                  className="w-full sm:w-auto"
+                >
+                  Search
+                </Button>
 
-onChange={(e)=>{
+              </div>
 
-setSearch(e.target.value);
-setNotFound(false);
+              {/* Suggestions */}
 
-}}
+              {search &&
+                filteredProducts.length > 0 && (
 
-placeholder="Search vegetables, fruits, grains..."
+                <div className="
+                absolute
+                top-full
+                mt-2
+                w-full
+                bg-white
+                rounded-2xl
+                shadow-xl
+                overflow-hidden
+                z-50
+                max-h-[300px]
+                overflow-y-auto">
 
-className="
-flex-1
-px-5
-py-2
-outline-none
-text-gray-700
-text-sm"
-/>
+                  {filteredProducts.map((item) => (
 
+                    <div
+                      key={item.id}
+                      onClick={() =>
+                        navigate(`/product/${item.id}`)
+                      }
+                      className="
+                      flex
+                      items-center
+                      gap-3
+                      px-4
+                      py-3
+                      cursor-pointer
+                      hover:bg-gray-100">
 
-<Button onClick={handleSearch}>
+                      <img
+                        src={item.image}
+                        className="w-12 h-12 rounded-xl object-cover"
+                      />
 
-Search
+                      <div>
 
-</Button>
+                        <h3 className="font-medium text-sm sm:text-base">
+                          {item.name}
+                        </h3>
 
-</div>
+                        <p className="text-sm text-gray-500">
+                          ₹{item.price}
+                        </p>
 
+                      </div>
 
-{/* Suggestions */}
+                    </div>
 
-{search &&
-filteredProducts.length>0 &&(
+                  ))}
 
-<div className="
-absolute
-top-full
-mt-2
-w-full
-bg-white
-rounded-3xl
-shadow-xl
-overflow-hidden
-z-50">
+                </div>
 
-{filteredProducts.map((item)=>(
+              )}
 
-<div
-key={item.id}
+              {/* Not found */}
 
-onClick={()=>
-navigate(`/product/${item.id}`)
-}
+              {search &&
+                filteredProducts.length === 0 &&
+                notFound && (
 
-className="
-flex
-items-center
-gap-3
-px-4
-py-3
-cursor-pointer
-hover:bg-gray-100">
+                <div className="
+                mt-3
+                bg-red-100
+                text-red-600
+                px-4
+                py-3
+                rounded-xl
+                text-sm">
 
-<img
-src={item.image}
-className="w-12 h-12 rounded-xl object-cover"
-/>
+                  Product not available
 
-<div>
+                </div>
 
-<h3 className="font-medium">
+              )}
 
-{item.name}
+            </div>
 
-</h3>
+            {/* Avatars */}
 
-<p className="text-sm text-gray-500">
-
-₹{item.price}
-
-</p>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-)}
-
-
-{/* Product not found */}
-
-{search &&
-filteredProducts.length===0 &&
-notFound && (
-
-<div className="
-mt-3
-bg-red-100
-text-red-600
-px-4
-py-3
-rounded-xl">
-
-Product not available
-
-</div>
-
-)}
-
-             </div>
-
-            {/* AVATARS */}
-            <div className="mt-8 flex items-center gap-4">
+            <div className="
+            mt-8
+            flex
+            flex-wrap
+            items-center
+            gap-4">
 
               <div className="flex -space-x-3">
 
                 <img
                   src={heroFarmer}
-                  className="w-10 h-10 rounded-full border-2 border-white object-cover"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white object-cover"
                 />
 
                 <img
                   src={heroFarmer}
-                  className="w-10 h-10 rounded-full border-2 border-white object-cover"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white object-cover"
                 />
 
                 <img
                   src={heroFarmer}
-                  className="w-10 h-10 rounded-full border-2 border-white object-cover"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-white object-cover"
                 />
 
               </div>
@@ -257,10 +257,28 @@ Product not available
 
           </motion.div>
 
-          {/* STATS PANEL */}
-          <div className="absolute bottom-0 left-0 w-full bg-white rounded-t-[28px] py-6 px-5 lg:px-10">
+          {/* Stats Panel */}
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="
+          absolute
+          bottom-0
+          left-0
+          w-full
+          bg-white
+          rounded-t-[24px]
+          sm:rounded-t-[28px]
+          py-6
+          px-4
+          sm:px-8
+          lg:px-10">
+
+            <div className="
+            grid
+            grid-cols-2
+            sm:grid-cols-3
+            lg:grid-cols-6
+            gap-5
+            sm:gap-6">
 
               {[
                 {
@@ -268,31 +286,26 @@ Product not available
                   value: "850+",
                   label: "Farmers",
                 },
-
                 {
                   icon: "📦",
                   value: "1250+",
                   label: "Products",
                 },
-
                 {
                   icon: "🏙️",
                   value: "35+",
                   label: "Cities",
                 },
-
                 {
                   icon: "❤️",
                   value: "2.5L+",
                   label: "Families",
                 },
-
                 {
                   icon: "🚜",
                   value: "1200+",
                   label: "Deliveries",
                 },
-
                 {
                   icon: "🌿",
                   value: "950+",
@@ -305,22 +318,41 @@ Product not available
                   className="text-center group"
                 >
 
-                  {/* ICON */}
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-[#F4F8F2] flex items-center justify-center text-xl shadow-sm group-hover:scale-105 transition-all duration-300">
+                  <div className="
+                  w-11 h-11 sm:w-12 sm:h-12
+                  mx-auto
+                  rounded-2xl
+                  bg-[#F4F8F2]
+                  flex
+                  items-center
+                  justify-center
+                  text-lg
+                  sm:text-xl
+                  shadow-sm
+                  group-hover:scale-105
+                  transition">
 
                     {item.icon}
 
                   </div>
 
-                  {/* VALUE */}
-                  <h3 className="mt-3 text-2xl font-bold text-[#1B4332]">
+                  <h3 className="
+                  mt-3
+                  text-xl
+                  sm:text-2xl
+                  font-bold
+                  text-[#1B4332]">
 
                     {item.value}
 
                   </h3>
 
-                  {/* LABEL */}
-                  <p className="mt-1 text-gray-500 text-xs font-medium">
+                  <p className="
+                  mt-1
+                  text-[11px]
+                  sm:text-xs
+                  text-gray-500
+                  font-medium">
 
                     {item.label}
 

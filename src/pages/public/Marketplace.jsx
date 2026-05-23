@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from "react";
-
 import { useSearchParams } from "react-router-dom";
 import {
   Search,
@@ -10,7 +8,6 @@ import {
 
 import Container from "../../components/layout/Container";
 import ProductCard from "../../components/cards/ProductCard";
-
 import { products } from "../../data/products";
 
 const categories = [
@@ -23,41 +20,42 @@ const categories = [
 ];
 
 const Marketplace = () => {
-
   const [search, setSearch] = useState("");
   const [searchParams] = useSearchParams();
 
-const categoryFromURL =
-  searchParams.get("category") || "All";
+  const categoryFromURL =
+    searchParams.get("category") || "All";
 
-const [activeCategory, setActiveCategory] =
-  useState("All");
-
-useEffect(() => {
-  setActiveCategory(categoryFromURL);
-}, [categoryFromURL]);
+  const [activeCategory, setActiveCategory] =
+    useState("All");
 
   const [sortType, setSortType] =
     useState("default");
 
-  // FILTER PRODUCTS
-  let filteredProducts = products.filter((product) => {
+  useEffect(() => {
+    setActiveCategory(categoryFromURL);
+  }, [categoryFromURL]);
 
-    const matchesSearch =
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase());
+  let filteredProducts = products.filter(
+    (product) => {
+      const matchesSearch =
+        product.name
+          .toLowerCase()
+          .includes(search.toLowerCase());
 
-    const matchesCategory =
-      activeCategory === "All"
-        ? true
-        : product.category === activeCategory;
+      const matchesCategory =
+        activeCategory === "All"
+          ? true
+          : product.category === activeCategory;
 
-    return matchesSearch && matchesCategory;
+      return (
+        matchesSearch &&
+        matchesCategory
+      );
+    }
+  );
 
-  });
-
-  // SORTING
+  // Sorting
   if (sortType === "low") {
     filteredProducts.sort(
       (a, b) => a.price - b.price
@@ -77,37 +75,87 @@ useEffect(() => {
   }
 
   return (
-    <section className="pt-24 pb-14 bg-[#FCFCFA] min-h-screen">
-
+    <section
+      className="
+      pt-20
+      sm:pt-24
+      pb-12
+      sm:pb-14
+      bg-[#FCFCFA]
+      min-h-screen"
+    >
       <Container>
 
         {/* HERO */}
-        <div className="bg-[#2D6A4F] rounded-4xl p-7 lg:p-10 relative overflow-hidden">
 
-          {/* GLOW */}
-          <div className="absolute top-0 right-0 w-60 h-60 bg-[#95D5B2] opacity-20 blur-3xl rounded-full"></div>
+        <div
+          className="
+          bg-[#2D6A4F]
+          rounded-[28px]
+          sm:rounded-[36px]
+          p-6
+          sm:p-8
+          lg:p-10
+          relative
+          overflow-hidden"
+        >
+
+          <div
+            className="
+            absolute
+            top-0
+            right-0
+            w-40
+            sm:w-60
+            h-40
+            sm:h-60
+            bg-[#95D5B2]
+            opacity-20
+            blur-3xl
+            rounded-full"
+          />
 
           <div className="relative z-10">
 
-            <p className="text-[#D8F3DC] font-medium text-xs tracking-wider">
-
+            <p
+              className="
+              text-[#D8F3DC]
+              font-medium
+              text-[11px]
+              sm:text-xs
+              tracking-wider"
+            >
               FARM FRESH MARKETPLACE
-
             </p>
 
-            <h1 className="mt-3 text-3xl lg:text-5xl font-bold text-white leading-tight max-w-3xl">
-
+            <h1
+              className="
+              mt-3
+              text-3xl
+              sm:text-4xl
+              lg:text-5xl
+              font-bold
+              text-white
+              leading-tight
+              max-w-4xl"
+            >
               Fresh From Farms
               <br />
               Delivered To Your City
-
             </h1>
 
-            <p className="mt-4 text-white/70 max-w-2xl text-sm lg:text-base leading-relaxed">
-
-              Explore vegetables, fruits, dairy and grains
-              directly sourced from trusted farmers.
-
+            <p
+              className="
+              mt-4
+              text-white/70
+              max-w-2xl
+              text-sm
+              sm:text-base
+              leading-relaxed"
+            >
+              Explore vegetables, fruits,
+              dairy and grains directly
+              sourced from trusted farmers.
             </p>
 
           </div>
@@ -115,50 +163,146 @@ useEffect(() => {
         </div>
 
         {/* SEARCH + FILTER */}
-        <div className="mt-8 flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+
+        <div
+          className="
+          mt-8
+          flex
+          flex-col
+          xl:flex-row
+          gap-4
+          xl:items-center
+          xl:justify-between"
+        >
 
           {/* SEARCH */}
-          <div className="flex items-center bg-white border border-[#ECECEC] rounded-2xl px-4 h-12 flex-1 shadow-sm">
 
-            <Search className="w-4 h-4 text-gray-400" />
+          <div
+            className="
+            flex
+            items-center
+            bg-white
+            border
+            border-[#ECECEC]
+            rounded-2xl
+            px-4
+            h-16
+            sm:h-14
+            flex-1
+            py-3
+            text:lg
+            sm:text-base
+            "
+          >
+
+            <Search
+              className="
+              w-5
+              h-5
+              text-gray-400"
+            />
 
             <input
               type="text"
               placeholder="Search fresh products..."
-              className="flex-1 h-full px-3 outline-none bg-transparent text-sm"
               value={search}
               onChange={(e) =>
                 setSearch(e.target.value)
               }
+              className="
+              flex-1
+              h-full
+              px-3
+              outline-none
+              bg-transparent
+              text-base
+              sm:text-sm"
             />
 
           </div>
 
           {/* RIGHT CONTROLS */}
-          <div className="flex items-center gap-3">
 
-            {/* FILTER */}
-            <button className="h-12 px-5 rounded-2xl bg-white border border-[#ECECEC] flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
+          <div
+            className="
+            flex
+            flex-col
+            sm:flex-row
+            gap-3
+            w-full
+            xl:w-auto"
+          >
 
-              <SlidersHorizontal className="w-4 h-4 text-[#1B4332]" />
+            {/* FILTER BUTTON */}
 
-              <span className="font-medium text-sm text-[#1B4332]">
+            <button
+              className="
+              h-12
+              px-5
+              rounded-2xl
+              bg-white
+              border
+              border-[#ECECEC]
+              flex
+              items-center
+              justify-center
+              gap-2
+              shadow-sm
+              hover:shadow-md
+              transition
+              w-full
+              sm:w-auto"
+            >
 
+              <SlidersHorizontal
+                className="
+                w-4
+                h-4
+                text-[#1B4332]"
+              />
+
+              <span
+                className="
+                font-medium
+                text-sm
+                text-[#1B4332]"
+              >
                 Filters
-
               </span>
 
             </button>
 
             {/* SORT */}
-            <div className="relative">
+
+            <div
+              className="
+              relative
+              w-full
+              sm:w-auto"
+            >
 
               <select
                 value={sortType}
                 onChange={(e) =>
-                  setSortType(e.target.value)
+                  setSortType(
+                    e.target.value
+                  )
                 }
-                className="appearance-none h-12 px-5 pr-10 rounded-2xl border border-[#ECECEC] bg-white text-sm outline-none shadow-sm cursor-pointer"
+                className="
+                appearance-none
+                h-12
+                w-full
+                sm:w-auto
+                px-5
+                pr-10
+                rounded-2xl
+                border
+                border-[#ECECEC]
+                bg-white
+                text-sm
+                outline-none
+                shadow-sm
+                cursor-pointer"
               >
 
                 <option value="default">
@@ -179,7 +323,17 @@ useEffect(() => {
 
               </select>
 
-              <ChevronDown className="w-4 h-4 absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <ChevronDown
+                className="
+                w-4
+                h-4
+                absolute
+                right-4
+                top-1/2
+                -translate-y-1/2
+                text-gray-400
+                pointer-events-none"
+              />
 
             </div>
 
@@ -188,78 +342,147 @@ useEffect(() => {
         </div>
 
         {/* CATEGORY FILTERS */}
-        <div className="mt-7 flex flex-wrap gap-3">
 
-          {categories.map((category, index) => (
+        <div
+          className="
+          mt-7
+          flex
+          flex-wrap
+          gap-2
+          sm:gap-3"
+        >
 
-            <button
-              key={index}
-              onClick={() =>
-                setActiveCategory(category)
-              }
-              className={`
-                px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300
+          {categories.map(
+            (category, index) => (
+
+              <button
+                key={index}
+                onClick={() =>
+                  setActiveCategory(
+                    category
+                  )
+                }
+
+                className={`
+                px-4 py-2
+                rounded-xl
+                text-xs sm:text-sm
+                font-medium
+                transition-all
+
                 ${
-                  activeCategory === category
+                  activeCategory ===
+                  category
+
                     ? "bg-[#2D6A4F] text-white shadow-lg"
+
                     : "bg-white text-[#1B4332] border border-[#ECECEC] hover:border-[#2D6A4F]"
                 }
               `}
-            >
+              >
 
-              {category}
+                {category}
 
-            </button>
+              </button>
 
-          ))}
+            )
+          )}
 
         </div>
 
         {/* TOP BAR */}
-        <div className="mt-8 flex items-center justify-between">
 
-          <h2 className="text-2xl lg:text-3xl font-bold text-[#1B4332]">
+        <div
+          className="
+          mt-8
+          flex
+          flex-col
+          sm:flex-row
+          gap-2
+          sm:items-center
+          sm:justify-between"
+        >
 
+          <h2
+            className="
+            text-2xl
+            sm:text-3xl
+            font-bold
+            text-[#1B4332]"
+          >
             Fresh Products
-
           </h2>
 
-          <p className="text-gray-500 text-sm">
-
-            {filteredProducts.length} Products
-
+          <p
+            className="
+            text-gray-500
+            text-sm"
+          >
+            {filteredProducts.length}
+            {" "}Products
           </p>
 
         </div>
 
         {/* PRODUCTS */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-7">
+
+        <div
+          className="
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          lg:grid-cols-3
+          xl:grid-cols-4
+          gap-5
+          mt-7"
+        >
 
           {filteredProducts.length > 0 ? (
 
-            filteredProducts.map((item) => (
+            filteredProducts.map(
+              (item) => (
 
-              <ProductCard
-                key={item.id}
-                product={item}
-              />
+                <ProductCard
+                  key={item.id}
+                  product={item}
+                />
 
-            ))
+              )
+            )
 
           ) : (
 
-            <div className="col-span-full bg-white rounded-[28px] p-14 text-center shadow-sm border border-[#ECECEC]">
+            <div
+              className="
+              col-span-full
+              bg-white
+              rounded-[24px]
+              p-8
+              sm:p-14
+              text-center
+              shadow-sm
+              border
+              border-[#ECECEC]"
+            >
 
-              <h3 className="text-2xl font-bold text-[#1B4332]">
-
+              <h3
+                className="
+                text-xl
+                sm:text-2xl
+                font-bold
+                text-[#1B4332]"
+              >
                 No Products Found
-
               </h3>
 
-              <p className="mt-3 text-gray-500 text-sm">
-
-                Try another keyword or category.
-
+              <p
+                className="
+                mt-3
+                text-gray-500
+                text-sm"
+              >
+                Try another keyword
+                or category.
               </p>
 
             </div>
@@ -269,7 +492,6 @@ useEffect(() => {
         </div>
 
       </Container>
-
     </section>
   );
 };
